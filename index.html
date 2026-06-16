@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Registrá y seguí tus hábitos diarios">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Hábitos">
+
+  <title>Buenos Hábitos</title>
+
+  <!-- Fuente -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a25630331f.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       VISTA: AUTH (Login / Registro)
+  ════════════════════════════════════════════════════════════════════ -->
+  <div id="vista-auth" class="vista activa">
+    <div class="auth-box">
+
+      <!-- Logo -->
+      <div class="auth-logo">
+        <span class="icono"><i class="fa-solid fa-seedling"></i></span>
+        <h1>Buenos Hábitos</h1>
+        <p>Construí tu mejor versión, un día a la vez.</p>
+      </div>
+
+      <!-- Error auth -->
+      <div id="error-auth"></div>
+
+      <!-- Panel Login -->
+      <div id="panel-login" class="auth-panel">
+        <h2>Iniciar sesión</h2>
+        <form id="form-login" novalidate>
+          <div class="campo">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="tu@email.com" required autocomplete="email">
+          </div>
+          <div class="campo">
+            <label for="login-password">Contraseña</label>
+            <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn-primary">Ingresar</button>
+        </form>
+        <p class="auth-link">
+          ¿No tenés cuenta? <a href="#" id="ir-registro">Registrate</a>
+        </p>
+      </div>
+
+      <!-- Panel Registro -->
+      <div id="panel-registro" class="auth-panel oculto">
+        <h2>Crear cuenta</h2>
+        <form id="form-registro" novalidate>
+          <div class="campo">
+            <label for="reg-nombre">Nombre</label>
+            <input type="text" id="reg-nombre" placeholder="Tu nombre" required autocomplete="name">
+          </div>
+          <div class="campo">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" placeholder="tu@email.com" required autocomplete="email">
+          </div>
+          <div class="campo">
+            <label for="reg-password">Contraseña</label>
+            <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" required autocomplete="new-password">
+          </div>
+          <div class="campo">
+            <label for="reg-password2">Repetir contraseña</label>
+            <input type="password" id="reg-password2" placeholder="••••••••" required autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn-primary">Crear cuenta</button>
+        </form>
+        <p class="auth-link">
+          ¿Ya tenés cuenta? <a href="#" id="ir-login">Iniciá sesión</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       VISTA: DASHBOARD
+  ════════════════════════════════════════════════════════════════════ -->
+  <div id="vista-dashboard" class="vista">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <h2><i class="fa-solid fa-seedling"></i> Buenos Hábitos</h2>
+        <p class="fecha" id="fecha-hoy"></p>
+      </div>
+      <div class="header-right">
+        <button id="btn-instalar" class="btn-instalar">
+          <i class="fa-solid fa-download"></i> Instalar
+        </button>
+        <button id="btn-logout" class="btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i> Salir
+        </button>
+      </div>
+    </header>
+
+    <!-- Saludo -->
+    <section class="saludo-section">
+      <h3>Hola, <span id="nombre-usuario"></span> <i class="fa-solid fa-hand-wave"></i></h3>
+      <p>¿Cómo vas con tus hábitos hoy?</p>
+    </section>
+
+    <!-- Progreso del día -->
+    <section class="progreso-section">
+      <div id="progreso-dia"></div>
+    </section>
+
+    <!-- Lista de hábitos -->
+    <section class="habitos-section">
+      <div class="seccion-titulo">
+        <h4>Hoy</h4>
+        <button id="btn-nuevo-habito" class="btn-agregar">
+          <i class="fa-solid fa-plus"></i> Nuevo hábito
+        </button>
+      </div>
+      <div id="lista-habitos"></div>
+    </section>
+
+    <!-- Hábitos archivados -->
+    <section id="seccion-archivados" class="habitos-section archivados-section oculta">
+      <div class="seccion-titulo">
+        <h4>Archivados</h4>
+        <button id="toggle-archivados" class="btn-toggle-archivados" aria-label="Mostrar u ocultar archivados">
+          <i class="fa-solid fa-chevron-right flecha-toggle"></i>
+        </button>
+      </div>
+      <div id="lista-archivados" class="contraida"></div>
+    </section>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       VISTA: NUEVO HÁBITO
+  ════════════════════════════════════════════════════════════════════ -->
+  <div id="vista-nuevo-habito" class="vista">
+
+    <div class="vista-header">
+      <button id="btn-cancelar-habito" class="btn-volver" aria-label="Volver">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/></svg>
+      </button>
+      <h2>Nuevo hábito</h2>
+    </div>
+
+    <!-- Preview en vivo -->
+    <div class="preview-habito">
+      <div class="preview-icono" id="preview-icono">✅</div>
+      <span class="preview-texto" id="preview-nombre">Nombre del hábito</span>
+    </div>
+
+    <form id="form-habito" novalidate>
+
+      <div class="campo">
+        <label for="input-nombre-habito">Nombre del hábito</label>
+        <input type="text" id="input-nombre-habito" placeholder="ej: Tomar agua, Meditar, Leer..."
+               required maxlength="50" autocomplete="off">
+      </div>
+
+      <div class="campo-emoji-color">
+        <div class="campo">
+          <label for="input-emoji">Emoji</label>
+          <input type="text" id="input-emoji" placeholder="💧" maxlength="2">
+        </div>
+        <div class="campo">
+          <label for="input-color">Color</label>
+          <input type="color" id="input-color" value="#7c6ff7">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary">Guardar hábito</button>
+    </form>
+  </div>
+
+
+  <!-- Modal: editar hábito -->
+  <div id="modal-edit" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Editar hábito</h3>
+        <button id="btn-cerrar-modal" class="btn-volver" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="form-editar" novalidate>
+        <div class="campo">
+          <label for="edit-nombre">Nombre</label>
+          <input type="text" id="edit-nombre" maxlength="50" required autocomplete="off">
+        </div>
+        <div class="campo-emoji-color">
+          <div class="campo">
+            <label for="edit-emoji">Emoji</label>
+            <input type="text" id="edit-emoji" maxlength="2">
+          </div>
+          <div class="campo">
+            <label for="edit-color">Color</label>
+            <input type="color" id="edit-color">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="btn-archivar-modal" class="btn-danger">Archivar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Banner offline -->
+  <div id="banner-offline" class="banner-offline oculto">
+    <i class="fa-solid fa-triangle-exclamation"></i> Sin conexión — mostrando datos guardados
+  </div>
+
+  <!-- Script principal (módulos ES) -->
+  <script type="module" src="/js/app.js"></script>
+
+  <!-- Script inline para fecha y preview en tiempo real -->
+  <script>
+    // Mostrar fecha de hoy en el header
+    const fechaEl = document.getElementById('fecha-hoy');
+    if (fechaEl) {
+      const opciones = { weekday: 'long', day: 'numeric', month: 'long' };
+      fechaEl.textContent = new Date().toLocaleDateString('es-AR', opciones);
+    }
+
+    // Preview en tiempo real del nuevo hábito
+    const inputNombre = document.getElementById('input-nombre-habito');
+    const inputEmoji  = document.getElementById('input-emoji');
+    const inputColor  = document.getElementById('input-color');
+    const prevIcono   = document.getElementById('preview-icono');
+    const prevNombre  = document.getElementById('preview-nombre');
+
+    function actualizarPreview() {
+      if (prevNombre) prevNombre.textContent = inputNombre.value || 'Nombre del hábito';
+      if (prevIcono)  prevIcono.textContent  = inputEmoji.value  || '✅';
+      if (prevIcono && inputColor) prevIcono.style.background = inputColor.value + '22';
+    }
+
+    if (inputNombre) inputNombre.addEventListener('input', actualizarPreview);
+    if (inputEmoji)  inputEmoji.addEventListener('input',  actualizarPreview);
+    if (inputColor)  inputColor.addEventListener('input',  actualizarPreview);
+  </script>
+
+</body>
+</html>

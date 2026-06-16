@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#7c6ff7"/>
+  <!-- Font Awesome seedling (simplificado) -->
+  <g transform="translate(5.5, 5) scale(0.066)" fill="white">
+    <!-- Tallo -->
+    <rect x="145" y="270" width="30" height="210" rx="15"/>
+    <!-- Hoja izquierda -->
+    <path d="M160 270 C160 270 60 220 60 120 C60 120 120 140 160 270Z" opacity="0.95"/>
+    <!-- Hoja derecha -->
+    <path d="M160 270 C160 270 260 220 260 120 C260 120 200 140 160 270Z" opacity="0.95"/>
+    <!-- Brote central -->
+    <path d="M145 270 C145 200 160 150 175 100 C175 100 200 130 175 270Z"/>
+  </g>
+</svg>

@@ -109,15 +109,34 @@ window.addEventListener('offline', actualizarBannerOffline);
 
 // ── Instalar PWA ──────────────────────────────────────────────────────────────
 let deferredPrompt = null;
+const btnInstalar = document.getElementById('btn-instalar');
+
+// Si ya está corriendo como PWA instalada, ocultar el botón
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  btnInstalar.style.display = 'none';
+}
+
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredPrompt = e;
-  document.getElementById('btn-instalar').style.display = 'flex';
+  btnInstalar.style.display = 'flex';
 });
-document.getElementById('btn-instalar').addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
+
+btnInstalar.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    if (outcome === 'accepted') {
+      btnInstalar.style.display = 'none';
+    }
+  } else {
+    // El navegador no disparó beforeinstallprompt: mostrar instrucciones
+    alert('Para instalar:\n• Chrome/Edge: menú (⋮) → "Instalar Buenos Hábitos"\n• Safari iOS: botón Compartir → "Agregar a inicio"');
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  btnInstalar.style.display = 'none';
   deferredPrompt = null;
-  document.getElementById('btn-instalar').style.display = 'none';
 });

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'buenos-habitos-v5';
+const CACHE_NAME = 'buenos-habitos-v6';
 const APP_SHELL = [
   '/index.html',
   '/css/styles.css',
